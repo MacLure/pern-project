@@ -15,6 +15,29 @@ app.use(express.json());
 
 // ROUTES
 
+// index
+app.get("/todos", async(request, response) => {
+  try {
+    const allTodos = await pool.query("SELECT * FROM todo");
+    response.json(allTodos.rows);
+
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
+// show
+app.get("/todos/:id", async(request, response) => {
+  try {
+    const { id } = request.params;
+    const todo = await pool.query("SELECT * FROM todo WHERE todo_id = $1", [id])
+    response.json(todo.rows[0]);
+
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
 // create
 app.post("/todos", async(request, response) => {
   try {
@@ -29,18 +52,8 @@ app.post("/todos", async(request, response) => {
   }
 });
 
-// index
-app.get("/todos", async(request, response) => {
-  try {
-    const allTodos = await pool.query("SELECT * FROM todo");
-    response.json(allTodos.rows);
 
-  } catch (error) {
-    console.log(error.message);
-  }
-});
 
-//get a todo
 
 //update a todo
 
