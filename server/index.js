@@ -52,10 +52,20 @@ app.post("/todos", async(request, response) => {
   }
 });
 
+// update
+app.put("/todos/:id", async(request, response) => {
+  try {
+    const { id } = request.params;
+    const { description } = request.body;
+    const updateTodo = await pool.query("UPDATE todo SET description = $1 WHERE todo_id = $2", [description, id])
+    const responseTodo = await pool.query("SELECT * FROM todo WHERE todo_id = $1", [updateTodo.todo_id])
+    response.json("Updated todo");
 
+  } catch (error) {
+    console.log(error.message);
+  }
+});
 
-
-//update a todo
 
 //delete a todo
 
