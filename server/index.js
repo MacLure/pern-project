@@ -29,7 +29,16 @@ app.post("/todos", async(request, response) => {
   }
 });
 
-//get all todos
+// index
+app.get("/todos", async(request, response) => {
+  try {
+    const allTodos = await pool.query("SELECT * FROM todo");
+    response.json(allTodos.rows);
+
+  } catch (error) {
+    console.log(error.message);
+  }
+});
 
 //get a todo
 
